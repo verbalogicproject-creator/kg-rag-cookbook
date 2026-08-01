@@ -1,0 +1,7 @@
+.context-os/digests/
+.context-os/reads-*.json
+.context-os/reads-*.jsonl
+.context-os/relay.ngf.md
+.context-os/state/
+.venv/
+__pycache__/
