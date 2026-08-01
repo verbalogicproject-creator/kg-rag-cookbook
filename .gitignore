@@ -5,3 +5,4 @@
 .context-os/state/
 .venv/
 __pycache__/
+.vouch/
