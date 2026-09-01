@@ -1,0 +1,211 @@
+# Curated nodes — the things the estate disagrees about.
+#
+# These cannot be extracted, because they require reading intent: deciding that
+# two formulas are rivals rather than variants is a judgement. So they are
+# declared here, in the open, and every one carries an evidence.source naming the
+# file it was read from. No source, no node.
+#
+# Loaded by TS-kg-rag-of-kg-rag.py, validated against the same rules as an
+# extracted node, and byte-reproducible with the rest of the graph.
+
+schema: kg-rag-of-kg-rags/curated-nodes/1.0
+
+fusion_method:
+  # --- generation 1: four formulas, no adjudication between them -------------
+  - id: rrf-k60-unified-retriever
+    name: "RRF k=60 (unified_retriever)"
+    generation: 1
+    formula: "sum over signals of 1/(k + rank_i), k=60"
+    signals: [symbolic, semantic]
+    calibration_required: false
+    summary: >-
+      Rank-based reciprocal rank fusion. Its own header argues that because it
+      uses rank rather than score it needs no calibration across heterogeneous
+      retrievers.
+    evidence:
+      source: "flags:eco-system/unified_retriever.py:44,189-231 (INSIGHT #893, lines 4-9)"
+
+  - id: alpha-dense-bm25-hybrid-retriever
+    name: "alpha*dense + (1-alpha)*bm25 (hybrid_retriever)"
+    generation: 1
+    formula: "alpha*dense + (1-alpha)*bm25, BM25 Okapi k1=1.5 b=0.75"
+    signals: [dense, bm25]
+    calibration_required: true
+    summary: >-
+      Linear blend requiring min-max normalisation before combination, because
+      cosine and BM25 are on different scales. Carries a documented
+      docstring/code disagreement about its own default.
+    evidence:
+      source: "flags:eco-system/hybrid_retriever.py:8 (docstring alpha=0.7) vs :176-187 (code derives ~0.47), :296-314 (_normalize_scores)"
+
+  - id: intent-adaptive-abg-fusion-weights
+    name: "8-intent adaptive alpha/beta/gamma (fusion_weights)"
+    generation: 1
+    formula: "alpha*semantic + beta*bm25 + gamma*graph, per-intent triple, normalised to 1.0"
+    signals: [semantic, bm25, graph]
+    calibration_required: true
+    summary: >-
+      The most developed generation-1 model: eight query intents, each with its
+      own weight triple. The parameter table the other gen-1 retrievers read from.
+    evidence:
+      source: "flags:eco-system/fusion_weights.py:29-68,146-170"
+
+  - id: semantic-keyword-0604
+    name: "0.6*cosine + 0.4*match_ratio (semantic_retriever)"
+    generation: 1
+    formula: "0.6*cosine_similarity + 0.4*keyword_match_ratio"
+    signals: [semantic, keyword]
+    calibration_required: false
+    summary: >-
+      Two-signal blend with no normalisation step; assumes both terms already
+      occupy [0,1].
+    evidence:
+      source: "flags:eco-system/semantic_retriever.py:334-340"
+
+  - id: three-signal-abg-doc
+    name: "0.40/0.45/0.15 three-signal (documented)"
+    generation: 1
+    formula: "0.40*vector + 0.45*text + 0.15*graph"
+    signals: [vector, text, graph]
+    calibration_required: true
+    summary: >-
+      The formula the estate's own playbook documents as the hybrid retrieval
+      recipe, with per-project calibration of the triple.
+    evidence:
+      source: "flags:dimensions-custom-queries/custom-retrival-systems-2026-05-23.md §1.6"
+
+  # --- generation 2 and the TypeScript engine: one formula -------------------
+  - id: rrf-declared-core
+    name: "RRF (declared_core)"
+    generation: 2
+    formula: "reciprocal rank fusion over bm25 + structural + optional dense"
+    signals: [bm25, structural, dense]
+    calibration_required: false
+    summary: >-
+      The adjudicated generation-2 fusion. Zero required dependencies, and the
+      engine six other packages import.
+    evidence:
+      source: "declared_core:declared_core/retrieval/rrf.py, fusion.py"
+
+  - id: rrf-vendored-ts
+    name: "RRF k=60 with time decay (multi-graph-memory)"
+    generation: 2
+    formula: "weight/(k + rank + 1), k=60, 14-day half-life, decay floor 0.1"
+    signals: [semantic, lexical, graph]
+    calibration_required: false
+    summary: >-
+      The TypeScript engine's shipped fusion, vendored with provenance. Already
+      intent-conditioned, and already three-signal.
+    evidence:
+      source: "multi-graph-memory:src/relevance/vendored/rank_fusion.ts:42-46,92-140"
+
+dimension:
+  # Six mutually inconsistent counts, one adjudicated answer.
+  - id: dim-44-enhanced-scorer
+    name: "44 dimensions (enhanced_dimension_scorer)"
+    generation: 1
+    declared_count: 44
+    defined_count: 44
+    summary: "Self-describes as 'ALL 44 dimensions' — the pre-upgrade figure."
+    evidence:
+      source: "flags:eco-system/embeddings/enhanced_dimension_scorer.py:21"
+
+  - id: dim-46-hybrid-embedder
+    name: "46 dimensions (hybrid_embedder)"
+    generation: 1
+    declared_count: 46
+    defined_count: null
+    summary: "Header claims 46D semantic dimensions — a third figure again."
+    evidence:
+      source: "flags:eco-system/embeddings/hybrid_embedder.py:7"
+
+  - id: dim-56-dimension-config
+    name: "56 dimensions (dimension_config)"
+    generation: 1
+    declared_count: 56
+    defined_count: 56
+    summary: "The one gen-1 registry whose declared and defined counts agree."
+    evidence:
+      source: "flags:eco-system/embeddings/dimension_config.py:6-22,615"
+
+  - id: dim-80-llm-brain
+    name: "80 dimensions (llm_brain_extractor)"
+    generation: 1
+    declared_count: 80
+    defined_count: 80
+    summary: >-
+      Describes itself as 56 NLKE + 14 project + 10 reliability, but hardcodes its
+      own list and never imports the 56 — so the subset claim is unverified.
+    evidence:
+      source: "flags:python-scripts/llm_brain_extractor.py:11-14,77-212"
+
+  - id: dim-640-extended-schema
+    name: "640 claimed / 94 defined (extended_schema)"
+    generation: 1
+    declared_count: 640
+    defined_count: 94
+    summary: >-
+      TOTAL_DIMENSIONS=640, of which 94 are actually defined here; 517 are 'REUSE
+      existing' placeholders and 29 are reserved.
+    evidence:
+      source: "flags:eco-system/dimensions/extended_schema.py:96,103-863"
+
+  - id: dim-196-44-unified-embedding
+    name: "196 / 44 (unified_embedding_retriever)"
+    generation: 1
+    declared_count: 196
+    defined_count: 44
+    summary: "Contradicts itself inside one file: header says 196D, a method docstring says 44D."
+    evidence:
+      source: "flags:eco-system/unified_embedding_retriever.py:8 vs :126"
+
+  - id: dim-12-declared-core
+    name: "12 dimensions (declared_core DEFAULT palette)"
+    generation: 2
+    declared_count: 12
+    defined_count: 12
+    summary: >-
+      The adjudicated answer. Interpretable [0,1] signals measuring the retrieval
+      relationship between an item and a query, domain-agnostic, and explicitly
+      not used by traversal or integrity.
+    evidence:
+      source: "kg_toolkit:kg_toolkit/dimensions.py:1-13 (ships declared_core DEFAULT unchanged)"
+
+eval_harness:
+  - id: rag-evaluator
+    name: "rag_evaluator"
+    summary: >-
+      Six ranking metrics from the standard library, pluggable judge, hash-sealed
+      receipts. An absent oracle yields null, never an imputed score.
+    evidence:
+      source: "rag_evaluator:rag_evaluator/metrics.py, receipt.py"
+
+  - id: mud-detection-gate
+    name: "NLKE-mud-detection screen/gate"
+    summary: >-
+      Deterministic admission gate. Spearman rho against the base plus the
+      fraction of the base's failures a candidate rescues; the conjunction is what
+      convicts. Tamper-evident hash-chain journal.
+    evidence:
+      source: "NLKE-mud-detection:mud_detection/correlate.py, screen.py, gate.py, receipt.py"
+
+  - id: measure-retrieval
+    name: "NLKE-primitives-library measure_retrieval"
+    summary: "Retrieval-only recall@k against a hand-declared expected-doc map. No model, no network."
+    evidence:
+      source: "NLKE-primitives-library:tools/measure_retrieval.py:214-232,288"
+
+  - id: validate-recall-gen1
+    name: "flags validate_recall (generation 1)"
+    summary: "22 probes across 6 domains. Pass bar: Recall@10 >= 85% overall and >= 70% per domain."
+    evidence:
+      source: "flags:eco-system/validate_recall.py:147-169,251-255; validation_probes.py:30-233"
+
+  - id: kg-toolkit-integrity
+    name: "kg_toolkit check_integrity"
+    summary: >-
+      Dangling edges, undeclared types, endpoint-type violations and cycles are
+      errors. Every defect is reported with a subject and a reason rather than
+      dropped.
+    evidence:
+      source: "kg_toolkit:kg_toolkit/integrity.py:48,120"

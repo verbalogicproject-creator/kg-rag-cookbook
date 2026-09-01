@@ -26,7 +26,7 @@ edges:
   gated_by: "the conformance checklist in §7"
 provenance:
   kind_spec_version: framework_spec/0.0.1
-  content_hash: PENDING
+  content_hash: sha256:7a66c679220245ff7b65da2c9de9d0c28a7aee211004a7cd5205a88efee4b398
   source_path: SPECS.ngf.md
   owner_user: eyal_nof
   law: "derivation-with-provenance, never fabrication"

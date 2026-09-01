@@ -24,7 +24,7 @@ edges:
   grounds_against: "kg-tooling-expert CLI — the retrieval backend, invoked directly"
 provenance:
   kind_spec_version: initiation_boot/0.0.1
-  content_hash: PENDING
+  content_hash: sha256:4779babe70c4c6c8fcd2260df4faa24249eb90fca408b63f73200fcd662ebb8c
   source_path: BOOT.ngf.md
   owner_user: eyal_nof
   law: "derivation-with-provenance, never fabrication"

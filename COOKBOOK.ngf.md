@@ -25,7 +25,7 @@ edges:
   governed_by: "METHODOLOGY.ngf.md §2 — nothing here is exempt from the gate"
 provenance:
   kind_spec_version: cookbook/0.0.1
-  content_hash: PENDING
+  content_hash: sha256:8a78645dee64dcde4c9f0cb8953509e9d58a9cf5ed62528c0780e20f4759b546
   source_path: COOKBOOK.ngf.md
   owner_user: eyal_nof
   law: "derivation-with-provenance, never fabrication"
@@ -185,9 +185,30 @@ Real defects from real builds. Full record: `kg-tooling-expert/playbook/bugs-gap
 | **X1** | high | **Silent fallback degradation** | retrieval degrades quietly instead of raising | **cross-project class** — found independently in two unrelated codebases |
 | **X2** | medium | Computed-but-unused centrality signal | signal calculated, never read | in the fusion engine |
 
-**X1 is the framework's most defensible finding.** The same failure shape appearing independently in
-two unrelated codebases makes it a *class*, not an incident. Anything that can fall back should
-either raise or record that it fell back.
+### Added 2026-09-01 — found while building `TS-kg-rag-of-kg-rag.db`
+
+Each verified by re-running the check that found it; commands are in the finding's
+`evidence.source` in the graph.
+
+| ID | Severity | Defect | Root cause | Status |
+|---|---|---|---|---|
+| **X1c** | high | `PRAGMA foreign_keys = ON` while **no table declares a foreign key** | the pragma enforces nothing on its own; referential integrity was assumed from its presence | `multi-graph-memory` — X1 class, 3rd codebase |
+| **X1d** | high | A dangling graph reference is **skipped, not reported** | `exporter.ts:179` correctly declines to invent a node, then says nothing | `multi-graph-memory` — X1 class, 4th codebase; closed by `src/kg/integrity.ts` |
+| **D10** | high | Cycle check **raises instead of answering** on deep graphs | `_find_cycle` recurses once per node; 50,000-node chain → `RecursionError` against CPython's limit of 1000 | `kg_toolkit`; TS port is iterative, tested at that depth |
+| **D11** | medium | A graph cannot be byte-compared | `store.py:37` stamps `datetime.now()` into `created_at` on every row, so identical builds differ | `kg_toolkit`; worked around by comparing a canonical projection |
+| **D12** | medium | Source inventory overcounted ~30% | a walk skipping only `__pycache__`/`.venv`/`.git`/`node_modules` counts `build/` — 205 duplicated files across 6 packages | fixed; 101,110 → 71,045 LOC |
+| **D13** | medium | 21% of a corpus would be discarded by its own schema | `method-primitive-schema` declares 5 statuses; the corpus uses 8 (`OBSERVED` 7, `PAUSE` 1, `MEASURED` 1) | ingested and tagged rather than dropped |
+| **D14** | medium | Declared ids collide where the schema says dedupe | 3 ids reused across cards; a node scheme keyed on declared id collapses them silently | node ids keyed on path; collisions reported |
+| **D15** | low | Two test counts disagree on every package | README badges count pytest *cases*, `def test_` counts *functions* — 80/107, 53/56, 25/29 | both valid; name the measure per column |
+
+**X1 is the framework's most defensible finding, and it got stronger.** The same failure shape has
+now appeared independently in **four** unrelated codebases (X1, X1c, X1d and the original pair).
+Anything that can fall back should either raise or record that it fell back — and a check whose
+failure mode is silence is the same defect wearing a different hat.
+
+**A second class is now visible: `[TYPED-NOT-EXTRACTED]`.** D12 and D15 are the same shape — a
+number a human typed into a document, which a script could have derived. Both were wrong. Both were
+caught only when something regenerated them. A number in a document is a claim with no gate on it.
 
 ---
 
@@ -203,6 +224,14 @@ either raise or record that it fell back.
 | Re-running `init --overwrite` over hand-edited `kg.py`/`asks.py` | destroys the edits |
 | Importing another corpus's playbook results | 6 of 9 degraded across scales |
 | Changing two variables and reporting a delta | attribution is gone (§6) |
+| `PRAGMA foreign_keys = ON` with no `FOREIGN KEY` declared | enforces nothing; presence read as protection (X1c) |
+| Skipping a bad reference without reporting it | X1 class — silence is not a pass (X1d) |
+| Recursive graph traversal in a defect checker | fails loudest on the graphs most likely to be defective (D10) |
+| Keying node ids on a declared id that is not unique | duplicates collapse without a message (D14) |
+| Counting source files without excluding `build/`/`dist/` | inflates every derived total (D12) |
+| Enforcing a schema's enum against a corpus that outgrew it | discards real content to defend a stale declaration (D13) |
+| Typing a number into a document a script could extract | no gate; wrong until someone re-reads it by hand ([TYPED-NOT-EXTRACTED]) |
+| Wall-clock timestamps in rows you intend to byte-compare | determinism lost at the storage layer (D11) |
 | Reporting `|Δ| < 0.02` as an improvement | inside judge variance |
 | Adding or reordering dimensions without re-indexing | every existing `.npz` is invalidated |
 | Deleting a resolved defect from the record | it gets rebuilt |

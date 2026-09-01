@@ -1,0 +1,53 @@
+# Which doctrine rule each finding answers to, declared rather than derived.
+#
+# Category is a heuristic and it was wrong for 23 of 56 findings. This maps by
+# declared id instead, so the link is a decision on record. Keys are the entry id
+# from the source card; a finding whose id is absent here falls back to its
+# category, and if that maps to nothing it stays unlinked and visible.
+#
+# evidence.source names where the rule is already stated in the estate — none of
+# these six rules is invented here.
+
+schema: kg-rag-of-kg-rags/doctrine-map/1.0
+
+evidence:
+  source: >-
+    Rules 1-4: NLKE-primitives-library:meta/{declaration,retrieval,measurement,
+    absence-is-not-a-result}.ngf.md. Rule 5 (authority): kg-rag
+    recipe-registry.json proof_limit; multi-graph-memory:src/port.ts
+    (ModelContextPort approval-free by construction); NLKE-primitives-library
+    runtime primitives. Rule 6 (provenance): NLKE-kg-rag-contract:README.md
+    ("a copy of a fact has no expiry date"); VENDORED.json tree_sha digests.
+
+governed_by_map:
+
+  # --- rule 5 · authority ---------------------------------------------------
+  context-is-not-authorization: authority
+  dispatch-is-not-effect: authority
+  receipts-amplify-trust: authority
+  authority-spoofing: authority
+  context-reflux: authority
+  ground-truth-write-boundary: authority
+  unguarded-sibling-endpoint: authority
+  coverage-degrades-with-surface-area: authority
+
+  # --- rule 6 · provenance --------------------------------------------------
+  merge-never-clobber: provenance
+  derivation-with-provenance: provenance
+  declared-core-vendored-five-times-in-sync: provenance
+  kg-toolkit-created-at-breaks-byte-reproducibility: provenance
+  namespace-what-must-be-unique: provenance
+
+  # --- rule 4 · absence is not a result -------------------------------------
+  absence-is-not-a-result: absence-is-not-a-result
+  count-what-you-skipped: absence-is-not-a-result
+  silent-failure-security-control: absence-is-not-a-result
+  lint-with-the-consumers-parser: absence-is-not-a-result
+
+  # --- rule 3 · measurement -------------------------------------------------
+  a-verifier-stricter-than-reality: measurement
+  the-instrument-was-the-bottleneck: measurement
+  probe-the-tool-for-the-task-you-have: measurement
+  negative-examples-buy-precision-never-recall: measurement
+  no-embeddings-inverts-the-threat-model: measurement
+  lexical-query-vocabulary-density: measurement

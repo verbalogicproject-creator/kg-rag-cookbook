@@ -6,3 +6,7 @@
 .venv/
 __pycache__/
 .vouch/
+
+# SQLite WAL sidecars — the graph itself is tracked, its journal is not
+*.db-shm
+*.db-wal

@@ -26,7 +26,7 @@ edges:
   feeds: "COOKBOOK.ngf.md — every promoted rule becomes a recipe or an anti-pattern"
 provenance:
   kind_spec_version: methodology/0.0.1
-  content_hash: PENDING
+  content_hash: sha256:570d5b236a9b6ed9aa54d5ed5f39a4d4d439acc31cbbd9316321070c3f50f361
   source_path: METHODOLOGY.ngf.md
   owner_user: eyal_nof
   law: "derivation-with-provenance, never fabrication"

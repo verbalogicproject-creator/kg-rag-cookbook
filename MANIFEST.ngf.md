@@ -27,7 +27,7 @@ edges:
   gate: "per-corpus empirical validation — authority is not sufficient"
 provenance:
   kind_spec_version: framework_manifest/0.0.1
-  content_hash: PENDING
+  content_hash: sha256:ce3ebf465f9d47e4086a7b38f06173d169d29ddd726c8418d547cffd801d373a
   source_path: MANIFEST.ngf.md
   owner_user: eyal_nof
   law: "derivation-with-provenance, never fabrication"
@@ -181,10 +181,63 @@ Upstream, when this repo is not enough: the RAG source-of-truth in `glassbox-os`
 
 ---
 
+## §8 · The graph — added 2026-09-01
+
+The framework acquired an executable and a corpus of its own. `TS-kg-rag-of-kg-rag.py` walks a
+declared allowlist of the estate and emits a knowledge graph whose *domain is the estate's own
+retrieval systems*; `TS-kg-rag-of-kg-rag.md` and `NLKE-production-quality-release-V1.0.0.md` are
+generated from it, and neither can drift from it undetected.
+
+**Why it exists.** Every finding in the estate was true when written and none of it was queryable,
+so the same context had to be re-explained at the start of every session. The graph answers, with
+citations: *where do my own systems disagree, and which side has evidence?*
+
+### What it recorded that was not previously written down
+
+| | |
+|---|---|
+| **8 contradictions** | four incompatible fusion formulas; six mutually inconsistent dimension counts |
+| **5 supersessions** | what generation 2 replaced, and the measurement that justified it |
+| **6 doctrine rules** | four were written as cards; two had to be named — see below |
+| **acyclic package graph** | 18 measured import edges — the monorepo can assemble bottom-up |
+| **8 vendored trees** | `declared_core` exists six times over, currently in agreement |
+
+### Two rules the estate was already following without naming
+
+Twenty-three of fifty-six findings answered to none of L1–L4 or to any of the four doctrine cards.
+Thirteen of them needed rules that existed in the estate's *code and contracts* but had never been
+written as doctrine:
+
+**`authority`** — knowing what something is does not confer permission to act on it, and issuing a
+directive is not performing it. Already stated in `kg-rag/recipe-registry.json`'s `proof_limit`, in
+`multi-graph-memory`'s approval-free `ModelContextPort`, and in the runtime primitives.
+
+**`provenance`** — a copy of a fact has no expiry date. Already the whole thesis of
+`NLKE-kg-rag-contract` and the reason `VENDORED.json` carries digests.
+
+> **Terminology, resolved.** `L2 · Authority is not sufficient` and the doctrine rule `authority`
+> use the same word for different things. **L2 is epistemic** — a playbook's say-so is not evidence,
+> and the gate is per-corpus validation. **`authority` is about permission** — grounding does not
+> license action. Both stand; neither renames the other. When it matters, say *L2* or
+> *rule `authority`*.
+
+### The framework's own provenance, closed
+
+All five cards carried `content_hash: PENDING` while declaring
+`law: "derivation-with-provenance, never fabrication"`. A provenance field that is never filled is a
+decoration. They now carry a real body digest, and `TS-kg-rag-of-kg-rag.py check` fails on a stale
+one — `stamp` refills them.
+
+---
+
 ## §7 · Status
 
-`[OBSERVED]` This repo is documentation. It ships no code and generates nothing on its own; it
-formalizes generators that already exist and instances that already run.
+`[SUPERSEDED 2026-09-01]` ~~This repo is documentation. It ships no code and generates nothing on
+its own.~~ **No longer true.** It ships `TS-kg-rag-of-kg-rag.py`, and generates a knowledge graph
+plus two documents from it. See §8.
+
+`[OBSERVED]` It still formalizes generators that already exist and instances that already run —
+that part stands. What changed is that the framework now has an executable of its own.
 
 `[NOT ESTABLISHED]` That the named-attribute α leg fixes `kg-tooling-expert`'s measured
 blind-query failure. The mechanism is right and the upstream measurement is strong, but **it has

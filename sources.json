@@ -1,0 +1,77 @@
+{
+  "schema": "kg-rag-of-kg-rags/sources/1.0",
+  "version": 1,
+  "comment": [
+    "The DECLARED source list. An explicit allowlist, never a glob:",
+    "absence-is-not-a-result applies to ingestion too, so a repo that is",
+    "not named here is deliberately excluded, not accidentally missed.",
+    "",
+    "roots are resolved from --root (default: this file's parent's parent),",
+    "so nothing here is an absolute path. The gen-1 estate hardcoded four",
+    "absolute DB paths and all four are now dead; that is the failure this",
+    "structure exists to prevent.",
+    "",
+    "import_root is where the package's own directory lives on sys.path.",
+    "None of these packages are pip-installed; each resolves only when its",
+    "repo root is importable. Declared here rather than rediscovered."
+  ],
+
+  "roots": {
+    "gen2": ".",
+    "gen1": "/storage/emulated/0/Download/claude-projects/flags"
+  },
+
+  "engine": {
+    "package": "kg_toolkit",
+    "import_root": "kg_toolkit",
+    "why": "Storage, typed schema and integrity checks. Chosen over a hand-rolled schema so edge endpoint constraints and dangling-edge detection are enforced by the store, not by this builder."
+  },
+
+  "packages": [
+    { "id": "declared_core",            "root": "gen2", "path": "declared_core",            "pkg": "declared_core",     "layer": 0, "scope": "IN",    "license": "Apache-2.0" },
+    { "id": "universal_parser",         "root": "gen2", "path": "universal_parser",         "pkg": "universal_parser",  "layer": 0, "scope": "IN",    "license": "Apache-2.0" },
+    { "id": "rag_evaluator",            "root": "gen2", "path": "rag_evaluator",            "pkg": "rag_evaluator",     "layer": 0, "scope": "IN",    "license": "NONE" },
+    { "id": "claude-arch-inventory",    "root": "gen2", "path": "claude-arch-inventory",    "pkg": "arch_inventory",    "layer": 0, "scope": "IN",    "license": "MIT" },
+    { "id": "corpus-guard",             "root": "gen2", "path": "corpus-guard",             "pkg": "corpus_guard",      "layer": 0, "scope": "IN",    "license": "PROPRIETARY" },
+
+    { "id": "kg_toolkit",               "root": "gen2", "path": "kg_toolkit",               "pkg": "kg_toolkit",        "layer": 1, "scope": "IN",    "license": "Apache-2.0" },
+    { "id": "frontmatter_rag",          "root": "gen2", "path": "frontmatter_rag",          "pkg": "frontmatter_rag",   "layer": 1, "scope": "IN",    "license": "Apache-2.0" },
+    { "id": "declared_rules",           "root": "gen2", "path": "declared_rules",           "pkg": "declared_rules",    "layer": 1, "scope": "IN",    "license": "Apache-2.0" },
+    { "id": "NLKE-mud-detection",       "root": "gen2", "path": "NLKE-mud-detection",       "pkg": "mud_detection",     "layer": 1, "scope": "IN",    "license": "Apache-2.0" },
+    { "id": "ngfify",                   "root": "gen2", "path": "ngfify",                   "pkg": "ngfify",            "layer": 1, "scope": "IN",    "license": "Apache-2.0" },
+
+    { "id": "NLKE-primitives-library",  "root": "gen2", "path": "NLKE-primitives-library",  "pkg": null,                "layer": 2, "scope": "IN",    "license": "PROPRIETARY" },
+    { "id": "project_memory",           "root": "gen2", "path": "project_memory",           "pkg": "project_memory",    "layer": 2, "scope": "IN",    "license": "Apache-2.0" },
+    { "id": "kg-rag-pipeline",          "root": "gen2", "path": "kg-rag-pipeline",          "pkg": null,                "layer": 3, "scope": "IN",    "license": "Apache-2.0" },
+
+    { "id": "sag-declarum-atlas-framework",          "root": "gen2", "path": "sag-declarum-atlas-framework",          "pkg": null, "layer": null, "scope": "SPEC", "license": "NONE" },
+    { "id": "NLKE-kg-rag-contract",                  "root": "gen2", "path": "NLKE-kg-rag-contract",                  "pkg": null, "layer": null, "scope": "SPEC", "license": "NONE" },
+    { "id": "NLKE-high-dimensional-KG-RAG-Framework","root": "gen2", "path": "NLKE-high-dimensional-KG-RAG-Framework","pkg": null, "layer": null, "scope": "SPEC", "license": "NONE" },
+    { "id": "kg-rag-cookbook",                       "root": "gen2", "path": "kg-rag-cookbook",                       "pkg": null, "layer": null, "scope": "SPEC", "license": "NONE" },
+
+    { "id": "codebase-memorizer",       "root": "gen2", "path": "codebase-memorizer",       "pkg": "codebase_memorizer","layer": null, "scope": "DEFER", "license": "Apache-2.0",
+      "defer_reason": "Scope overlaps /root/multi-graph-memory. Two memory systems must not both ship without a stated boundary." },
+    { "id": "context-os",               "root": "gen2", "path": "context-os",               "pkg": null,                "layer": null, "scope": "DEFER", "license": "Apache-2.0",
+      "defer_reason": "Adjacent format concern; relationship to .ngf.md not established." },
+    { "id": "ctx-architecture",         "root": "gen2", "path": "ctx-architecture",         "pkg": null,                "layer": null, "scope": "DEFER", "license": "Apache-2.0",
+      "defer_reason": "Adjacent format concern; relationship to .ngf.md not established." },
+
+    { "id": "flags",                    "root": "gen1", "path": ".",                        "pkg": null,                "layer": null, "scope": "RETIRE", "license": "NONE",
+      "retire_reason": "Generation 1. Superseded on every axis; its two orchestrators reference four database paths that do not exist." }
+  ],
+
+  "excluded": {
+    "comment": "Named so the exclusion is a decision on record, not an omission.",
+    "declared-grep": "separate product line",
+    "declared-context": "separate product line",
+    "declared-engine": "separate product line",
+    "declared-grep-ship": "separate product line",
+    "declared-context-ship": "separate product line",
+    "declared-engine-ship": "separate product line",
+    "declarum-substrate": "no LICENSE; provenance unsettled",
+    "kg-tooling-expert": "no LICENSE; provenance unsettled",
+    "scaffold_kg_rag_agent": "no LICENSE; provenance unsettled",
+    "declared_repo_factory": "zero .py — agent definition, not a package",
+    "nlke-production-auditor": "zero .py — agent definition, not a package"
+  }
+}
