@@ -10,3 +10,6 @@ __pycache__/
 # SQLite WAL sidecars — the graph itself is tracked, its journal is not
 *.db-shm
 *.db-wal
+
+# Idea drafts and handoffs — working material, not framework
+ideas/
