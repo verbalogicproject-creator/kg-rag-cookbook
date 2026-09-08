@@ -36,6 +36,7 @@ def evaluate(pipeline: Any, query_file: str | Path, *, modes: Sequence[str] = ("
         ndcg10: list[float] = []
         latencies: list[float] = []
         failures: list[dict[str, str]] = []
+        degraded: list[dict[str, str]] = []
         for item in queries:
             if not isinstance(item, dict) or not isinstance(item.get("query"), str) or not isinstance(item.get("relevant_ids"), list):
                 raise ConfigError("each evaluation query needs query and relevant_ids")
@@ -46,6 +47,13 @@ def evaluate(pipeline: Any, query_file: str | Path, *, modes: Sequence[str] = ("
                 failures.append({"query": item["query"], "error": str(exc)})
                 continue
             latencies.append((time.perf_counter() - started) * 1000)
+            # A run whose reranker died still produces numbers, and they look exactly like
+            # a valid measurement. The pipeline reports the dropout honestly in
+            # `degradation`; this harness used to ignore it, so two arms of an A/B could
+            # differ only in whether a component happened to be alive -- which is how a
+            # 6.7x latency gap and a whole scoring difference got attributed to a prompt.
+            for entry in result.get("degradation") or []:
+                degraded.append({"query": item["query"], **entry})
             actual = [row["id"] for row in result["results"]]
             expected = set(item["relevant_ids"])
             r5, _, _ = _rank_metrics(actual, expected, 5)
@@ -54,6 +62,9 @@ def evaluate(pipeline: Any, query_file: str | Path, *, modes: Sequence[str] = ("
         percentile = lambda values, fraction: sorted(values)[max(0, min(len(values) - 1, round((len(values) - 1) * fraction)))] if values else None
         reports[mode] = {
             "queries_run": len(recalls10), "failures": failures,
+            # Named components that dropped out mid-run, and how many queries each affected.
+            "degraded": degraded,
+            "degraded_components": sorted({entry.get("component", "?") for entry in degraded}),
             "Recall@5": statistics.mean(recalls5) if recalls5 else None,
             "Recall@10": statistics.mean(recalls10) if recalls10 else None,
             "MRR@10": statistics.mean(mrr10) if mrr10 else None,
@@ -61,10 +72,25 @@ def evaluate(pipeline: Any, query_file: str | Path, *, modes: Sequence[str] = ("
             "latency_ms": {"p50": percentile(latencies, .5), "p95": percentile(latencies, .95)},
         }
     state = pipeline.store.status()
-    qualification = "qualified" if len(independent) >= 20 and all(not report["failures"] for report in reports.values()) else "NOT_ESTABLISHED"
+    # Degradation disqualifies as firmly as an outright failure: a measurement taken while
+    # the reranker was refusing connections is not a worse measurement, it is a measurement
+    # of a different pipeline.
+    any_degraded = any(report["degraded"] for report in reports.values())
+    qualification = (
+        "qualified"
+        if len(independent) >= 20
+        and all(not report["failures"] for report in reports.values())
+        and not any_degraded
+        else "NOT_ESTABLISHED"
+    )
     return {
         "operation": "evaluate", "qualification": qualification,
-        "reason": None if qualification == "qualified" else "requires at least 20 independently authored blind queries and no hard-contract failures",
+        "reason": None if qualification == "qualified" else (
+            "a component degraded mid-run: "
+            + ", ".join(sorted({e.get("component", "?") for r in reports.values() for e in r["degraded"]}))
+            if any_degraded
+            else "requires at least 20 independently authored blind queries and no hard-contract failures"
+        ),
         "corpus": {"chunks": state["chunks"], "documents": state["documents"]}, "sample_size": len(queries),
         "independent_blind_queries": len(independent), "judge": payload.get("judge") if isinstance(payload, dict) else None,
         "modes": reports, "index_coverage": state["profiles"], "storage_bytes": pipeline.store.path.stat().st_size if pipeline.store.path.exists() else 0,

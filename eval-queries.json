@@ -5,7 +5,8 @@
     {
       "query": "How does the system stop an answer from citing a passage it was never given?",
       "relevant_ids": [
-        "chunk:eb97e9a22a8fbe86d6fbbf07e95cb442dd900c749f300b7a568bdb187775d14a"
+        "chunk:1a285ec92a880f7b100dea33b5132ba49f4e11ed3ae7920d283732e8183cddb8",
+        "chunk:b66ac04cf3693e78f295fb73278136d0f6eea20759a63eef1180d8b4aba1446b"
       ],
       "independent": false
     },
@@ -53,6 +54,13 @@
       "independent": false
     },
     {
+      "query": "Where does it decide a question is about code rather than prose?",
+      "relevant_ids": [
+        "chunk:e0fc29b8024b6b0b2bbd73bb6151f457aab928a7973d12cc8e84ac2390a26153"
+      ],
+      "independent": false
+    },
+    {
       "query": "How is the reranker's reply checked rather than trusted?",
       "relevant_ids": [
         "chunk:802095d5558b5b5dcb2b9fc4a75d05aaf65b2ca6b42255192edc6fe3399e601f"
@@ -62,7 +70,7 @@
     {
       "query": "How does it talk to an embedding model running on this machine?",
       "relevant_ids": [
-        "chunk:3946a3a7b96ae831cfd9f59b0e81cc90aaa6dd259485d739b404cbb40c80718a"
+        "chunk:eab47dcf6666e24478709eb884c9c0daf5205767132f2e70aa4ad533b62e4205"
       ],
       "independent": false
     },
@@ -133,14 +141,6 @@
       "query": "Where are the fields that make two embedding runs count as different?",
       "relevant_ids": [
         "chunk:5f9c685b94403880e2de725d717642ac1f487ba30d823d45d9e463a07c8fa5fd"
-      ],
-      "independent": false
-    },
-    {
-      "query": "Where does it decide a question is about code rather than prose?",
-      "relevant_ids": [
-        "chunk:d90f95c012e260ab3f0989b1fdfee15d5583e86f7ed9829f68b6a9ab28e2128c",
-        "chunk:ef04b9e5a161138ddbe3ed520f6e9fa0853073355e81d2b15becb952854887c4"
       ],
       "independent": false
     }
