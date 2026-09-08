@@ -42,7 +42,9 @@
     {
       "query": "Why might the system report that retrieval quality has not been established?",
       "relevant_ids": [
-        "chunk:bcf547494047af0511a126aa79bcdb09de21f1f2302bb0c0acc885c6548f4698"
+        "chunk:3d6262ce9bf0e52e502b226fc909a9345e737e14fbd14e33efa7f8f6bb395541",
+        "chunk:b2a6ad6633247f26f1600727b5f869047e3dacc06db966fa5f4417f418b6297a",
+        "chunk:bd335deff2563244b8aa9902657dd09a4e3f3edaf8ce0ca9edf742e95eef72dc"
       ],
       "independent": false
     },
