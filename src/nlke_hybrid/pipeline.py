@@ -51,13 +51,35 @@ class HybridPipeline:
         return chunk.text
 
     def _fit_to_provider_budgets(self, chunks: Sequence[Chunk], selected: Sequence[str]) -> list[Chunk]:
-        """Split a chunk again until every selected provider accepts its full input."""
+        """Split a chunk again until EVERY configured provider accepts its full input.
+
+        Every configured one, not merely the selected one -- because this method also
+        assigns `chunk.id` (below), so fitting against a subset makes chunk identity a
+        function of which provider you happened to index with.
+
+        That was not theoretical. Indexing with a 1024-dimension model re-fitted the corpus
+        to its tokenizer, minted different ids for the chunks that moved, and the cascade
+        from `documents` -> `chunks` -> `embeddings` deleted the OTHER profile's vectors for
+        them. Two evaluation ground-truth ids stopped resolving, and the previously indexed
+        model could no longer embed its own corpus at all: chunks fitted to the newer
+        tokenizer exceeded the older model's context and the server rejected the batch.
+
+        Fitting against all configured budgets makes chunk identity a property of the
+        corpus instead of the command line, so two embedders can be compared on the same
+        chunks -- which is the only way that comparison means anything -- and every
+        configured model can accept every chunk. `selected` is retained for the
+        cloud-eligibility skip, which is a per-provider content rule, not a budget.
+        """
         pending = list(chunks)
-        for name in selected:
+        for name in sorted(self.providers):
             provider = self.providers[name]
             limit = int(provider.profile.dimensions and self.config.raw["profiles"][name]["max_input_tokens"])
             fitted: list[Chunk] = []
             for chunk in pending:
+                # `cloud_eligible` is a stable property of the CHUNK, so skipping on it
+                # keeps the fit selection-independent. Skipping on `name not in selected`
+                # would not -- it would put the tight budget back behind the command line,
+                # which is the whole defect this method was changed to remove.
                 if name == "cloud" and not chunk.cloud_eligible:
                     fitted.append(chunk)
                     continue
@@ -85,7 +107,7 @@ class HybridPipeline:
             materialized.append(replace(chunk, id="chunk:" + ident, ordinal=ordinal, content_hash=content_hash))
         return materialized
 
-    def index(self, *, providers: str | Sequence[str] = "local", batch_size: int = 16) -> dict[str, Any]:
+    def index(self, *, providers: str | Sequence[str] = "local", batch_size: int | None = None) -> dict[str, Any]:
         selected = self._selected_providers(providers)
         nodes, edges, dangling = EstateGraphAdapter(self.config.resolve(self.config.raw["graph"]["path"])).load()
         chunks = self._fit_to_provider_budgets(scan_chunks(self.config), selected)
@@ -99,8 +121,13 @@ class HybridPipeline:
             job_id = self.store.start_job(profile, len(pending))
             completed = 0
             try:
-                for offset in range(0, len(pending), batch_size):
-                    batch = pending[offset : offset + batch_size]
+                # How many texts one request may carry is a property of the MODEL and the
+                # device, not of the caller. A batch of 16 real chunks takes ~8s on a 300m
+                # model here and ~76s on a 0.6b one -- the second blows any timeout sized
+                # for the first, and reads as a broken server rather than a slower model.
+                size = int(self.config.raw["profiles"][name].get("embed_batch_size", batch_size or 16))
+                for offset in range(0, len(pending), size):
+                    batch = pending[offset : offset + size]
                     # Local formatting includes the heading title in the model text; Gemini uses
                     # its declared native RETRIEVAL_DOCUMENT task type for the same evidence.
                     texts = [f"{chunk.title}\n{chunk.text}" for chunk in batch]

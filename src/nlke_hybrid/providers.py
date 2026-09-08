@@ -55,7 +55,12 @@ class LocalHTTPEmbeddingProvider(EmbeddingProvider):
         self.config = config
         self.raw = config.raw["profiles"]["local"]
         self.profile = config.profile("local")
-        self.timeout = 30.0
+        # Declared per profile, because how long an embedder takes is a property of the
+        # MODEL, not of the client. 30s is fine for a 300m model and too short for a 0.6b
+        # one on this device -- which surfaced as "transient HTTP failure after 3 attempts:
+        # timed out" partway through an index run, i.e. a slow model looking like a broken
+        # one. Default preserved so existing configs behave identically.
+        self.timeout = float(self.raw.get("request_timeout_seconds", 30.0))
 
     def format(self, text: str, *, purpose: str, title: str = "") -> str:
         template = self.raw["document_format"] if purpose == "document" else self.raw["query_format"]

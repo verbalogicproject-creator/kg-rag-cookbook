@@ -103,8 +103,19 @@ def validate_config(config: HybridConfig, *, require_paths: bool = True) -> list
     for name in ("local", "cloud"):
         try:
             profile = config.profile(name)
-            if profile.dimensions != 768:
-                errors.append(f"profile {name} dimensions must be 768, got {profile.dimensions}")
+            # Dimensions must be declared and positive -- NOT a specific number.
+            #
+            # This read `!= 768` and was the only occurrence of that literal outside test
+            # fixtures. Nothing depends on it: `embeddings.dimensions` is a per-row column,
+            # profiles are separate vector spaces that are never compared to each other
+            # (`both` mode fuses ranked LISTS through RRF, not vectors), and the invariant
+            # that actually matters -- a vector matching its own profile's declared size --
+            # is already enforced at store.py:173 and providers.py:190.
+            #
+            # So the literal pinned the size two particular models happened to share and
+            # refused every other embedder. A 1024-dimension model is not a misconfiguration.
+            if not isinstance(profile.dimensions, int) or profile.dimensions <= 0:
+                errors.append(f"profile {name} must declare positive integer dimensions, got {profile.dimensions!r}")
             if profile.normalization != "l2/v1":
                 errors.append(f"profile {name} must declare l2/v1 normalization")
         except (KeyError, ConfigError):

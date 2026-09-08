@@ -49,15 +49,17 @@
   "profiles": {
     "local": {
       "provider": "local-http",
-      "model": "embeddinggemma-300m-q8",
-      "dimensions": 768,
+      "model": "qwen3-embedding-0.6b-q8_0",
+      "dimensions": 1024,
       "normalization": "l2/v1",
-      "document_format": "task: search result | title: {title} | text: {text}",
-      "query_format": "task: search result | query: {text}",
-      "endpoint": "http://127.0.0.1:8145/v1/embeddings",
-      "health_endpoint": "http://127.0.0.1:8145/health",
-      "tokenize_endpoint": "http://127.0.0.1:8145/tokenize",
-      "max_input_tokens": 1024
+      "document_format": "{title}\n{text}",
+      "query_format": "Instruct: Given a code search query, retrieve relevant passages from the codebase\nQuery: {text}",
+      "endpoint": "http://127.0.0.1:8146/v1/embeddings",
+      "health_endpoint": "http://127.0.0.1:8146/health",
+      "tokenize_endpoint": "http://127.0.0.1:8146/tokenize",
+      "max_input_tokens": 1024,
+      "request_timeout_seconds": 180,
+      "embed_batch_size": 4
     },
     "cloud": {
       "provider": "gemini",
