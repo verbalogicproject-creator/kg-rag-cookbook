@@ -1,0 +1,148 @@
+{
+  "judge": null,
+  "_note": "Drafted by Claude from the indexed corpus, NOT independently authored. Every relevant_ids entry was resolved from the store by (path, symbol) lookup, not transcribed. Set independent=true only for queries you have reviewed and would have asked yourself - that flag is what the harness counts toward qualification, and self-certifying it defeats the gate.",
+  "queries": [
+    {
+      "query": "How does the system stop an answer from citing a passage it was never given?",
+      "relevant_ids": [
+        "chunk:eb97e9a22a8fbe86d6fbbf07e95cb442dd900c749f300b7a568bdb187775d14a"
+      ],
+      "independent": false
+    },
+    {
+      "query": "What keeps a change to the embedding prompt wording from corrupting vectors that already exist?",
+      "relevant_ids": [
+        "chunk:0b5caffbe2a4095a2282ded7dccbc197b7d1b4d37f75935ad4ae09348f1bf991"
+      ],
+      "independent": false
+    },
+    {
+      "query": "Which part refuses to start when the canonical dependency is not the exact expected revision?",
+      "relevant_ids": [
+        "chunk:42e349652fde49a63e12a3da7cd715e27901995ae6c73e72911e4a3755711f6c",
+        "chunk:4ea555ce4c176baf8f2fcdcf7ba9ac4d89579ca9475b0af754450bba07170311"
+      ],
+      "independent": false
+    },
+    {
+      "query": "How is a Python file broken into retrievable pieces while keeping real line numbers?",
+      "relevant_ids": [
+        "chunk:3a15f68f9fe20fa75a8301333e8300d4e94aedba199831fdf9490dfba9b6921a"
+      ],
+      "independent": false
+    },
+    {
+      "query": "How far does the graph walk from a starting node, and what bounds it?",
+      "relevant_ids": [
+        "chunk:626d617327899c6e091ba82e05c314facdfedf43fab5673782f842576b0b68bf"
+      ],
+      "independent": false
+    },
+    {
+      "query": "Why might the system report that retrieval quality has not been established?",
+      "relevant_ids": [
+        "chunk:bcf547494047af0511a126aa79bcdb09de21f1f2302bb0c0acc885c6548f4698"
+      ],
+      "independent": false
+    },
+    {
+      "query": "What happens when text is too long for the model instead of cutting it short?",
+      "relevant_ids": [
+        "chunk:7a16ec7a4e9036a0b07b8e3f072eeb8a59eb6f74ca9f253683b96c476a6b1c50"
+      ],
+      "independent": false
+    },
+    {
+      "query": "How is the reranker's reply checked rather than trusted?",
+      "relevant_ids": [
+        "chunk:802095d5558b5b5dcb2b9fc4a75d05aaf65b2ca6b42255192edc6fe3399e601f"
+      ],
+      "independent": false
+    },
+    {
+      "query": "How does it talk to an embedding model running on this machine?",
+      "relevant_ids": [
+        "chunk:3946a3a7b96ae831cfd9f59b0e81cc90aaa6dd259485d739b404cbb40c80718a"
+      ],
+      "independent": false
+    },
+    {
+      "query": "What stops a credentials file from being pulled into the index?",
+      "relevant_ids": [
+        "chunk:61d17b0a25b8ae8087cac5c3a19a2d47b1dded97c9f655978c092a334d19f99b"
+      ],
+      "independent": false
+    },
+    {
+      "query": "What does the command line return when the index is not finished?",
+      "relevant_ids": [
+        "chunk:869b48a58a587ddb34764960c6e8051ee717929f016152ba8b673d0bacde9fd1"
+      ],
+      "independent": false
+    },
+    {
+      "query": "How is the estate graph opened so it cannot be written to?",
+      "relevant_ids": [
+        "chunk:eb55790a3e039ee6ae46f1229614b32273b423219a80463516a01c9180ad98c9"
+      ],
+      "independent": false
+    },
+    {
+      "query": "Which ranking measures are computed, and over what cutoffs?",
+      "relevant_ids": [
+        "chunk:56384be0d4c0116e0245e23295ecef262ab55a0f045e298106ad00840a4bafd2"
+      ],
+      "independent": false
+    },
+    {
+      "query": "How does the builder prove a rebuild produced exactly the same database?",
+      "relevant_ids": [
+        "chunk:43e19bf28981de569f60b8fdfd3961ad8c2d0fca577cbbda07ccf07f0c248e59"
+      ],
+      "independent": false
+    },
+    {
+      "query": "How does it know which pieces are allowed to leave the machine?",
+      "relevant_ids": [
+        "chunk:816d171365e379201c22128185fd2c993ba6c8fe52c1c8dd3e65c23680ca67ee"
+      ],
+      "independent": false
+    },
+    {
+      "query": "What happens to a document with no headings at all?",
+      "relevant_ids": [
+        "chunk:c648edd586a316ba599b808a7a4716c31f8391e8d489bf80b6e97e0241221f09"
+      ],
+      "independent": false
+    },
+    {
+      "query": "How is a failed call to a model server retried?",
+      "relevant_ids": [
+        "chunk:f1aedc9b2ee455c51c1201203a9af3f34747574ed6f8abf7628083ccbeb8d493"
+      ],
+      "independent": false
+    },
+    {
+      "query": "What distinguishes a hand-written card from an extracted module in the graph?",
+      "relevant_ids": [
+        "chunk:5d5f6803129f1325863237e0d0350fc67df793e4598c0611cc2741af5ba1069a"
+      ],
+      "independent": false
+    },
+    {
+      "query": "Where are the fields that make two embedding runs count as different?",
+      "relevant_ids": [
+        "chunk:5f9c685b94403880e2de725d717642ac1f487ba30d823d45d9e463a07c8fa5fd"
+      ],
+      "independent": false
+    },
+    {
+      "query": "Where does it decide a question is about code rather than prose?",
+      "relevant_ids": [
+        "chunk:d90f95c012e260ab3f0989b1fdfee15d5583e86f7ed9829f68b6a9ab28e2128c",
+        "chunk:ef04b9e5a161138ddbe3ed520f6e9fa0853073355e81d2b15becb952854887c4"
+      ],
+      "independent": false
+    }
+  ]
+}
