@@ -1,0 +1,114 @@
+{
+  "schema": "nlke-hybrid-rag/1.0",
+  "storage": {
+    "path": ".nlke-hybrid/index.sqlite3"
+  },
+  "canonical_dependency": {
+    "name": "declared-core",
+    "path": "/root/projects/declared_core",
+    "revision": "526961e9edbc07f21db39d2183fc0ddc74066dbd",
+    "tree_sha256": "c9e1bad0e3d06a6a428ef5d76fb6d2ddcccc287d01f8eff71f68102fa36118c4"
+  },
+  "sources": [
+    {
+      "id": "kg-rag-cookbook",
+      "path": ".",
+      "include": [
+        "**/*.md",
+        "**/*.py"
+      ],
+      "exclude": [
+        ".git/**",
+        ".venv/**",
+        ".nlke-hybrid/**",
+        "__pycache__/**",
+        "build/**",
+        "dist/**",
+        "ideas/**",
+        "TS-kg-rag-of-kg-rag.md",
+        "NLKE-production-quality-release-V1.0.0.md"
+      ],
+      "cloud_eligible": true
+    },
+    {
+      "id": "full-original-system-deterministic-kg-rag-example",
+      "path": "/storage/emulated/0/Download/claude-projects/full-original-system/how-full-original-system-db-deterministic-KG-RAG-was-built.md",
+      "include": [
+        "*"
+      ],
+      "exclude": [],
+      "cloud_eligible": false
+    }
+  ],
+  "graph": {
+    "path": "TS-kg-rag-of-kg-rag.db",
+    "read_only": true,
+    "max_seed_nodes": 10,
+    "max_expanded_candidates": 50
+  },
+  "profiles": {
+    "local": {
+      "provider": "local-http",
+      "model": "embeddinggemma-300m-q8",
+      "dimensions": 768,
+      "normalization": "l2/v1",
+      "document_format": "task: search result | title: {title} | text: {text}",
+      "query_format": "task: search result | query: {text}",
+      "endpoint": "http://127.0.0.1:8145/v1/embeddings",
+      "health_endpoint": "http://127.0.0.1:8145/health",
+      "tokenize_endpoint": "http://127.0.0.1:8145/tokenize",
+      "max_input_tokens": 1024
+    },
+    "cloud": {
+      "provider": "gemini",
+      "model": "gemini-embedding-001",
+      "dimensions": 768,
+      "normalization": "l2/v1",
+      "document_task_type": "RETRIEVAL_DOCUMENT",
+      "query_task_type": "RETRIEVAL_QUERY",
+      "code_query_task_type": "CODE_RETRIEVAL_QUERY",
+      "max_input_tokens": 1024
+    }
+  },
+  "services": {
+    "reranker": {
+      "endpoint": "http://127.0.0.1:8144/v1/rerank",
+      "health_endpoint": "http://127.0.0.1:8144/health",
+      "model": "bge-reranker-v2-m3-q8",
+      "max_input_tokens": 1024
+    },
+    "generator": {
+      "endpoint": "http://127.0.0.1:8147/v1/chat/completions",
+      "health_endpoint": "http://127.0.0.1:8147/health",
+      "model": "qwen2.5-3b-instruct-q4_0",
+      "max_context_tokens": 4096,
+      "temperature": 0.2,
+      "top_p": 0.8,
+      "top_k": 20,
+      "max_output_tokens": 512
+    },
+    "classifier": {
+      "enabled": false,
+      "endpoint": "http://127.0.0.1:8148"
+    }
+  },
+  "retrieval": {
+    "default_mode": "local",
+    "candidate_limit": 50,
+    "rrf_k": 60,
+    "lexical_weight": 1.0,
+    "graph_weight": 0.5,
+    "semantic_weight": 1.0,
+    "rerank_candidates": 30,
+    "passage_limit": 8,
+    "per_document_limit": 2,
+    "chunk_tokens": 512,
+    "chunk_overlap_tokens": 64
+  },
+  "enforcement": {
+    "require_declared_core_identity": true,
+    "require_tokenizer_for_indexing": true,
+    "local_inference_serialized": true,
+    "retry_attempts": 2
+  }
+}

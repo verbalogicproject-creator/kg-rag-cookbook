@@ -182,7 +182,7 @@ Every copy of a given package declares the same digest, and the upstream tree ma
 | `project_memory` | IN | L2 | 113 | 18,415 | 422 | 4 | Apache-2.0 | [[node:system::project_memory]] |
 | `NLKE-primitives-library` | IN | L2 | 14 | 4,618 | 14 | 400 | PROPRIETARY | [[node:system::NLKE-primitives-library]] |
 | `kg-rag-pipeline` | IN | L3 | 29 | 5,780 | 92 | 1 | Apache-2.0 | [[node:system::kg-rag-pipeline]] |
-| `kg-rag-cookbook` | SPEC | — | 1 | 1,590 | 0 | 5 | **none** | [[node:system::kg-rag-cookbook]] |
+| `kg-rag-cookbook` | SPEC | — | 17 | 3,400 | 6 | 5 | **none** | [[node:system::kg-rag-cookbook]] |
 | `NLKE-kg-rag-contract` | SPEC | — | 2 | 993 | 0 | 1 | **none** | [[node:system::NLKE-kg-rag-contract]] |
 | `NLKE-high-dimensional-KG-RAG-Framework` | SPEC | — | 1 | 769 | 0 | 26 | **none** | [[node:system::NLKE-high-dimensional-KG-RAG-Framework]] |
 | `sag-declarum-atlas-framework` | SPEC | — | 4 | 641 | 0 | 82 | **none** | [[node:system::sag-declarum-atlas-framework]] |
@@ -191,7 +191,7 @@ Every copy of a given package declares the same digest, and the upstream tree ma
 | `ctx-architecture` | DEFER | — | 14 | 2,894 | 38 | 0 | Apache-2.0 | [[node:system::ctx-architecture]] |
 | `flags` | RETIRE | — | — | 0 | — | 0 | **none** | [[node:system::flags]] |
 
-**IN + SPEC totals: 542 Python files · 75,038 LOC · 1,326 test functions · 524 `.ngf.md` cards.**
+**IN + SPEC totals: 558 Python files · 76,848 LOC · 1,332 test functions · 524 `.ngf.md` cards.**
 
 
 ---
@@ -218,7 +218,7 @@ Every row extracted. `?` is honest: this document cannot run a test suite, and a
 | `universal_parser` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ? |
 | `NLKE-high-dimensional-KG-RAG-Framework` | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ | ? |
 | `NLKE-kg-rag-contract` | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ | ? |
-| `kg-rag-cookbook` | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ | ? |
+| `kg-rag-cookbook` | ✓ | ✗ | ✗ | ✗ | ✗ | ✓ | ? |
 | `sag-declarum-atlas-framework` | ✗ | ✗ | ✗ | ✗ | ✓ | ✗ | ? |
 
 ### Blockers

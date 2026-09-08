@@ -1,0 +1,2 @@
+[console_scripts]
+nlke-hybrid = nlke_hybrid.cli:main

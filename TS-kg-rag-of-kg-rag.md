@@ -69,7 +69,7 @@ Counts are extracted at build time. A stale number here fails `check` rather tha
 | `project_memory` | IN | L2 | 113 | 18,415 | 422 | Apache-2.0 | [[node:system::project_memory]] |
 | `NLKE-primitives-library` | IN | L2 | 14 | 4,618 | 14 | PROPRIETARY | [[node:system::NLKE-primitives-library]] |
 | `kg-rag-pipeline` | IN | L3 | 29 | 5,780 | 92 | Apache-2.0 | [[node:system::kg-rag-pipeline]] |
-| `kg-rag-cookbook` | SPEC | — | 1 | 1,590 | 0 | NONE | [[node:system::kg-rag-cookbook]] |
+| `kg-rag-cookbook` | SPEC | — | 17 | 3,400 | 6 | NONE | [[node:system::kg-rag-cookbook]] |
 | `NLKE-kg-rag-contract` | SPEC | — | 2 | 993 | 0 | NONE | [[node:system::NLKE-kg-rag-contract]] |
 | `NLKE-high-dimensional-KG-RAG-Framework` | SPEC | — | 1 | 769 | 0 | NONE | [[node:system::NLKE-high-dimensional-KG-RAG-Framework]] |
 | `sag-declarum-atlas-framework` | SPEC | — | 4 | 641 | 0 | NONE | [[node:system::sag-declarum-atlas-framework]] |
@@ -706,7 +706,7 @@ Six ranking metrics, pure standard library. Lower priority because the Python ha
 ## §7 · How to verify this document
 
 
-Graph: **1260 nodes, 1298 edges**.
+Graph: **1276 nodes, 1314 edges**.
 
 
 **Doctrine coverage: 61 of 61 findings hang off one of the 6 rules; 0 do not.**
@@ -729,13 +729,13 @@ Graph: **1260 nodes, 1298 edges**.
 | `eval_harness` | 5 |
 | `finding` | 61 |
 | `fusion_method` | 7 |
-| `module` | 619 |
+| `module` | 635 |
 | `system` | 21 |
 | `ts_target` | 5 |
 
 | Edge type | Count |
 |---|---|
-| `contains` | 1189 |
+| `contains` | 1205 |
 | `contradicts` | 8 |
 | `depends_on` | 18 |
 | `governed_by` | 61 |

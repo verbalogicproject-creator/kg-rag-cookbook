@@ -7,6 +7,11 @@
 __pycache__/
 .vouch/
 
+# NLKE hybrid index and diagnostic receipts. The source configuration is tracked;
+# credentials are intentionally not.
+.nlke-hybrid/
+.env
+
 # SQLite WAL sidecars — the graph itself is tracked, its journal is not
 *.db-shm
 *.db-wal
