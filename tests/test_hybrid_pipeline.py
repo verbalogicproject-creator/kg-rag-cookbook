@@ -8,6 +8,8 @@ import numpy as np
 
 from nlke_hybrid.config import HybridConfig
 from nlke_hybrid.declared_core import _tree_sha256
+
+from conftest import canonical_declared_core
 from nlke_hybrid.models import EmbeddingProfile, Generator
 from nlke_hybrid.pipeline import HybridPipeline
 from nlke_hybrid.store import CorpusStore
@@ -77,7 +79,7 @@ def _config(tmp_path: Path) -> HybridConfig:
     (source / "guide.md").write_text("# Guide\n\nThe alpha symbol describes deterministic retrieval.", encoding="utf-8")
     graph = tmp_path / "estate.db"
     _graph(graph, "alpha.py")
-    canonical = Path("/root/projects/declared_core")
+    canonical = canonical_declared_core()
     raw = {
         "schema": "nlke-hybrid-rag/1.0", "storage": {"path": "index.sqlite3"},
         "canonical_dependency": {"name": "declared-core", "path": str(canonical), "revision": "526961e9edbc07f21db39d2183fc0ddc74066dbd", "tree_sha256": _tree_sha256(canonical)},

@@ -1,8 +1,0 @@
-numpy>=1.26
-httpx>=0.27
-google-genai>=1.0
-declared-core @ file:///root/projects/declared_core
-
-[dev]
-pytest>=8
-build>=1.2

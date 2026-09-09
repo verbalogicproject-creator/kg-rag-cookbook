@@ -48,19 +48,32 @@ class DeclaredCoreAdapter:
     def _imports(self) -> tuple[Any, Any, Any]:
         if not self._loaded:
             self.verify_identity()
+            expected = self.config.resolve(self.config.raw["canonical_dependency"]["path"])
             try:
                 package = importlib.import_module("declared_core")
                 bm25 = importlib.import_module("declared_core.retrieval.bm25")
                 rrf = importlib.import_module("declared_core.retrieval.rrf")
                 schema = importlib.import_module("declared_core.schema")
             except ImportError as exc:
+                # Name the mechanism, not just the absence. The obvious reading of
+                # "install it" is `pip install -e`, which under PEP 660 puts an
+                # editable *proxy* on the path — `__file__` then resolves into
+                # site-packages and the canonicality check below rejects it. An
+                # error whose natural next step is a second error is not a fix.
                 raise IdentityError(
-                    "declared-core is not installed. Install this project's declared local dependency."
+                    f"declared-core is not importable. It is a sibling working copy, not a "
+                    f"pip package: put {expected} on sys.path, e.g. write that one line into "
+                    f"<venv>/lib/python*/site-packages/declared_core_canonical.pth. "
+                    f"`pip install -e` installs a PEP 660 proxy whose __file__ is not canonical "
+                    f"and will be refused."
                 ) from exc
-            expected = self.config.resolve(self.config.raw["canonical_dependency"]["path"])
             loaded = Path(package.__file__ or "").resolve()
             if expected not in loaded.parents:
-                raise IdentityError(f"loaded declared_core is not canonical: {loaded}")
+                raise IdentityError(
+                    f"loaded declared_core is not canonical: {loaded} is not under {expected}. "
+                    f"A PEP 660 editable install produces exactly this; use a .pth file holding "
+                    f"{expected} instead."
+                )
             self._bm25, self._rrf, self._schema = bm25, rrf, schema
             self._loaded = True
         return self._bm25, self._rrf, self._schema

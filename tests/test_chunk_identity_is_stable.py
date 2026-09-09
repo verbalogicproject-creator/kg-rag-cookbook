@@ -23,6 +23,8 @@ from pathlib import Path
 
 from nlke_hybrid.config import HybridConfig
 from nlke_hybrid.declared_core import _tree_sha256
+
+from conftest import canonical_declared_core
 from nlke_hybrid.ingest import scan_chunks
 from nlke_hybrid.models import EmbeddingProfile
 from nlke_hybrid.pipeline import HybridPipeline
@@ -54,7 +56,7 @@ def _config(tmp_path: Path) -> HybridConfig:
     (source / "long.md").write_text(
         "# Heading\n\n" + " ".join(f"word{n}" for n in range(400)), encoding="utf-8"
     )
-    canonical = Path("/root/projects/declared_core")
+    canonical = canonical_declared_core()
     raw = {
         "schema": "nlke-hybrid-rag/1.0", "storage": {"path": "index.sqlite3"},
         "canonical_dependency": {"name": "declared-core", "path": str(canonical),

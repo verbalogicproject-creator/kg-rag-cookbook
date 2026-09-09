@@ -18,3 +18,7 @@ __pycache__/
 
 # Idea drafts and handoffs — working material, not framework
 ideas/
+
+# setuptools build metadata — regenerated on every install, and it carries its own
+# copy of the dependency list, which is one more place for it to drift.
+*.egg-info/

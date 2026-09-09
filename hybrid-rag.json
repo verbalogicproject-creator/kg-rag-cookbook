@@ -5,7 +5,7 @@
   },
   "canonical_dependency": {
     "name": "declared-core",
-    "path": "/root/projects/declared_core",
+    "path": "../declared_core",
     "revision": "526961e9edbc07f21db39d2183fc0ddc74066dbd",
     "tree_sha256": "c9e1bad0e3d06a6a428ef5d76fb6d2ddcccc287d01f8eff71f68102fa36118c4"
   },

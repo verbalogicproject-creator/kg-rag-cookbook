@@ -15,6 +15,32 @@ then [`BOOT.ngf.md`](./BOOT.ngf.md), and stop there until you have done what it 
 | [`METHODOLOGY.ngf.md`](./METHODOLOGY.ngf.md) | The loop and the validation gate |
 | [`COOKBOOK.ngf.md`](./COOKBOOK.ngf.md) | Recipes, defects, anti-patterns |
 
+## Install
+
+`nlke_hybrid` needs a **sibling working copy** of `declared_core`, not a pip package:
+
+```bash
+git clone <declared_core> ../declared_core   # revision pinned in hybrid-rag.json
+python -m venv .venv && .venv/bin/pip install -e .
+echo "$(cd ../declared_core && pwd)" > .venv/lib/python*/site-packages/declared_core_canonical.pth
+```
+
+That last line is not a workaround for something that should be a dependency — it is the
+supported install, and `pyproject.toml` deliberately does not list `declared-core`.
+
+`src/nlke_hybrid/declared_core.py` is a strict adapter: it compares `declared_core.__file__`
+against the path pinned in `hybrid-rag.json` and refuses a copy whose identity it cannot
+confirm. Under PEP 660, `pip install -e ../declared_core` does not put the source directory on
+`sys.path` — it installs an editable *proxy*, so `__file__` resolves into `site-packages` and
+the adapter correctly rejects it. A `.pth` file holding the real directory is what makes
+`__file__` canonical.
+
+The path in `hybrid-rag.json` is relative (`../declared_core`) and resolved against that file's
+own directory, so a checkout works from anywhere. It used to be `/root/projects/declared_core`,
+in both the config and as `declared-core @ file:///root/projects/declared_core` in
+`pyproject.toml` — which made this project installable on exactly one computer.
+`tests/test_installable_off_this_machine.py` fails if either returns.
+
 ## The graph
 
 ```bash
